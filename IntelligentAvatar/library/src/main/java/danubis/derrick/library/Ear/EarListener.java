@@ -1,0 +1,10 @@
+package danubis.derrick.library.Ear;
+
+/**
+ * Created by yiluo on 24/1/17.
+ */
+
+public interface EarListener {
+
+    void onListenResult(String result);
+}
