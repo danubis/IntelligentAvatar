@@ -6,16 +6,16 @@ import danubis.derrick.library.Brain.Result;
  * Created by yiluo on 24/1/17.
  */
 
-public class Answer implements Result {
+public class Answer extends Result {
 
 
     @Override
-    public String getType() {
+    public String getAnsType() {
         return null;
     }
 
     @Override
-    public String getResult() {
+    public String getAns() {
         return null;
     }
 }

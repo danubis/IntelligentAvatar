@@ -4,8 +4,11 @@ package danubis.derrick.library.Brain;
  * Created by yiluo on 24/1/17.
  */
 
-public interface Result {
+public abstract class Result {
 
-    String getType();
-    String getResult();
+    private String ansType;
+    private String ans;
+
+    public abstract String getAnsType();
+    public abstract String getAns();
 }

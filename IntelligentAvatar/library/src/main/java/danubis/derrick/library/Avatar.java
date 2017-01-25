@@ -4,21 +4,26 @@ import android.content.Context;
 
 import danubis.derrick.library.Body.Body;
 import danubis.derrick.library.Brain.Brain;
+import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
 import danubis.derrick.library.Ear.EarListener;
+import danubis.derrick.library.Mouth.CnMouth;
+import danubis.derrick.library.Mouth.EnMouth;
 import danubis.derrick.library.Mouth.Mouth;
 import danubis.derrick.library.Mouth.MouthListener;
 
 
-// TODO: 24/1/17 need to think about the listener again 
-public class Avatar {
+public class Avatar implements MouthListener, EarListener {
 
     public static final String ZH_CN = "zhCN";
     public static final String EN = "en";
 
+    public static final String SPEAK_TIME = "time";
+    public static final String SPEAK_DATE = "date";
+
+
 
     private Context context;
-    private Brain brain;
     private Body body;
     private Ear ear;
     private Mouth mouth;
@@ -31,15 +36,21 @@ public class Avatar {
                    AvatarListener listener) {
 
         this.context = context;
-        this.brain = brain;
         this.body = body;
         this.listener = listener;
 
-        ear = new Ear(brain.getLanguage(), brain.getAccent());
-        ear.setListener(listener);
-
-        mouth = new Mouth(brain.getLanguage(), brain.getAccent());
-        mouth.setListener(listener);
+        switch (brain.getLanguage()) {
+            case ZH_CN:
+                ear = new CnEar();
+                mouth = new CnMouth();
+                break;
+            case EN:
+                ear = new CnEar();
+                mouth = new EnMouth();
+                break;
+        }
+        ear.setListener(this);
+        mouth.setListener(this);
     }
 
 
@@ -69,7 +80,7 @@ public class Avatar {
             this.listener = listener;
             return this;
         }
-        
+
         public Avatar build() {
             return new Avatar(context, brain, body, listener);
         }
@@ -77,42 +88,58 @@ public class Avatar {
 
 
     public void speak(String textToSpeak) {
-
+        mouth.speak(textToSpeak);
     }
 
 
     public void stopSpeaking() {
-
+        mouth.stopSpeaking();
     }
 
 
     public void listen() {
-
+        ear.listen();
     }
 
 
     public void stopListening() {
-
-    }
-
-
-    public void think(String question) {
-
+        ear.stopListening();
     }
 
 
     public void pause() {
-
+        body.pause();
     }
 
 
     public void resume() {
-
+        body.resume();
     }
 
 
     public void destroy() {
-
+        body.destroy();
+        ear.destroy();
+        mouth.destroy();
     }
 
+
+    @Override
+    public void onSpeakStarted(String speakingText) {
+        body.doSpeakingAction();
+        listener.onSpeakStarted(speakingText);
+    }
+
+
+    @Override
+    public void onSpeakEnded() {
+        body.doWaitingAction();
+        listener.onSpeakEnded();
+    }
+
+
+    @Override
+    public void onListenResult(String result) {
+        listener.onListenResult(result);
+    }
 }

@@ -6,15 +6,17 @@ import danubis.derrick.library.AvatarListener;
  * Created by yiluo on 24/1/17.
  */
 
-public class Ear {
+public abstract class Ear {
 
-    private AvatarListener listener;
+    private EarListener listener;
 
-    public Ear(String language, String accent) {
-
-    }
-
-    public void setListener(AvatarListener listener) {
+    public void setListener(EarListener listener) {
         this.listener = listener;
     }
+
+    public abstract void listen();
+
+    public abstract void stopListening();
+
+    public abstract void destroy();
 }

@@ -11,6 +11,7 @@ import danubis.derrick.library.Brain.Brain;
 
 public class MyBrain extends Brain {
 
+
     public MyBrain(String language, String accent) {
         super(language, accent);
     }

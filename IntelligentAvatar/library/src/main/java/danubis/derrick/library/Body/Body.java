@@ -5,4 +5,11 @@ package danubis.derrick.library.Body;
  */
 
 public abstract class Body {
+
+    public abstract void doSpeakingAction();
+    public abstract void doWaitingAction();
+    public abstract void pause();
+    public abstract void resume();
+    public abstract void destroy();
+
 }

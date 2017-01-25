@@ -6,6 +6,7 @@ package danubis.derrick.library;
 
 public interface AvatarListener {
 
-    void onSpeakEnd();
+    void onSpeakStarted(String textToSpeak);
+    void onSpeakEnded();
     void onListenResult(String result);
 }
