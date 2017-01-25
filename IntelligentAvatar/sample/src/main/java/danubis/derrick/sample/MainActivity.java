@@ -1,5 +1,6 @@
 package danubis.derrick.sample;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -8,11 +9,12 @@ import android.widget.TextView;
 
 import danubis.derrick.library.Avatar;
 import danubis.derrick.library.AvatarListener;
+import danubis.derrick.library.Body;
 
-public class MainActivity extends AppCompatActivity implements AvatarListener {
+public class MainActivity extends AppCompatActivity implements AvatarListener{
 
     private MyBrain myBrain;
-    private MyBody myBody;
+    private Body myBody;
     private Avatar avatar;
 
     private TextView subtitleTextView;
@@ -23,6 +25,12 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String path = "your mp4 video file path";
+
+        myBody = (Body) findViewById(R.id.videoView);
+        myBody.setVideoPath(path);
+        myBody.start();
 
         subtitleTextView = (TextView) findViewById(R.id.sub_textView);
         resultTextView = (TextView) findViewById(R.id.result_textView);
@@ -42,11 +50,10 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
             }
         });
 
-        myBrain = new MyBrain(Avatar.ZH_CN, null);
-        myBody = new MyBody();
+        myBrain = new MyBrain(Avatar.EN, null);
         avatar = new Avatar.Builder()
                 .context(this)
-                .xfAppId("your xun fei app id")
+                .xfAppId("-------")
                 .listener(this)
                 .brain(myBrain)
                 .body(myBody)

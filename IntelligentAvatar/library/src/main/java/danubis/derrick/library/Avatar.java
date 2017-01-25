@@ -2,7 +2,6 @@ package danubis.derrick.library;
 
 import android.content.Context;
 
-import danubis.derrick.library.Body.Body;
 import danubis.derrick.library.Brain.Brain;
 import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
@@ -107,6 +106,7 @@ public class Avatar implements MouthListener, EarListener {
 
     public void listen() {
         stopSpeaking();
+        body.doWaitingAction();
         ear.listen();
     }
 
@@ -118,6 +118,8 @@ public class Avatar implements MouthListener, EarListener {
 
     public void pause() {
         body.pause();
+        stopSpeaking();
+        stopListening();
     }
 
 

@@ -2,8 +2,6 @@ package danubis.derrick.library.Ear;
 
 import android.content.Context;
 
-import danubis.derrick.library.AvatarListener;
-
 /**
  * Created by yiluo on 24/1/17.
  */
