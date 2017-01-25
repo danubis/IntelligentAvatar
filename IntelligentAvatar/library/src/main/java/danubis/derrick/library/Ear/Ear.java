@@ -12,9 +12,11 @@ public abstract class Ear {
 
     EarListener listener;
     Context context;
+    String appId;
 
-    public Ear(Context context) {
+    Ear(Context context, String appId) {
         this.context = context;
+        this.appId = appId;
     }
 
     public void setListener(EarListener listener) {

@@ -21,9 +21,9 @@ public class CnEar extends Ear {
     private String tempResult = "";
 
 
-    public CnEar(Context context) {
-        super(context);
-        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=56ef40cc," + SpeechConstant.FORCE_LOGIN + "=true");
+    public CnEar(Context context, String appId) {
+        super(context, appId);
+        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=" + appId + "," + SpeechConstant.FORCE_LOGIN + "=true");
         setAsr();
     }
 

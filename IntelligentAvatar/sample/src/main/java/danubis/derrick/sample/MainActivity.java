@@ -6,8 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import danubis.derrick.library.Avatar;
 import danubis.derrick.library.AvatarListener;
 
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
         myBody = new MyBody();
         avatar = new Avatar.Builder()
                 .context(this)
+                .xfAppId("your xun fei app id")
                 .listener(this)
                 .brain(myBrain)
                 .body(myBody)
@@ -109,6 +108,6 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
             }
         });
 
-        // TODO: 25/1/17 implement your play list of answer logic here.
+        //implement your play list of answer logic here
     }
 }

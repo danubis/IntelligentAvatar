@@ -23,7 +23,6 @@ public class Avatar implements MouthListener, EarListener {
     public static final String SPEAK_DATE = "date";
 
 
-
     private Context context;
     private Body body;
     private Ear ear;
@@ -32,6 +31,7 @@ public class Avatar implements MouthListener, EarListener {
 
 
     private Avatar(Context context,
+                   String appId,
                    Brain brain,
                    Body body,
                    AvatarListener listener) {
@@ -42,11 +42,11 @@ public class Avatar implements MouthListener, EarListener {
 
         switch (brain.getLanguage()) {
             case ZH_CN:
-                ear = new CnEar(context);
+                ear = new CnEar(context, appId);
                 mouth = new CnMouth(context);
                 break;
             case EN:
-                ear = new EnEar(context);
+                ear = new EnEar(context, appId);
                 mouth = new EnMouth(context);
                 break;
         }
@@ -58,12 +58,18 @@ public class Avatar implements MouthListener, EarListener {
     public static class Builder {
 
         private Context context;
+        private String xfAppId;
         private Brain brain;
         private Body body;
         private AvatarListener listener;
 
         public Builder context(Context context) {
             this.context = context;
+            return this;
+        }
+
+        public Builder xfAppId(String appid) {
+            this.xfAppId = appid;
             return this;
         }
 
@@ -83,7 +89,7 @@ public class Avatar implements MouthListener, EarListener {
         }
 
         public Avatar build() {
-            return new Avatar(context, brain, body, listener);
+            return new Avatar(context, xfAppId, brain, body, listener);
         }
     }
 

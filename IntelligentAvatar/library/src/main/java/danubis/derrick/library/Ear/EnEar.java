@@ -21,9 +21,9 @@ public class EnEar extends Ear {
     private String tempResult = "";
 
 
-    public EnEar(Context context) {
-        super(context);
-        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=56ef40cc," + SpeechConstant.FORCE_LOGIN + "=true");
+    public EnEar(Context context, String appId) {
+        super(context, appId);
+        SpeechUtility.createUtility(context, SpeechConstant.APPID + "=" + appId + "," + SpeechConstant.FORCE_LOGIN + "=true");
         setAsr();
     }
 
