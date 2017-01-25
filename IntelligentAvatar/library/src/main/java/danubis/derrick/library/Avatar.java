@@ -7,6 +7,7 @@ import danubis.derrick.library.Brain.Brain;
 import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
 import danubis.derrick.library.Ear.EarListener;
+import danubis.derrick.library.Ear.EnEar;
 import danubis.derrick.library.Mouth.CnMouth;
 import danubis.derrick.library.Mouth.EnMouth;
 import danubis.derrick.library.Mouth.Mouth;
@@ -41,12 +42,12 @@ public class Avatar implements MouthListener, EarListener {
 
         switch (brain.getLanguage()) {
             case ZH_CN:
-                ear = new CnEar();
-                mouth = new CnMouth();
+                ear = new CnEar(context);
+                mouth = new CnMouth(context);
                 break;
             case EN:
-                ear = new CnEar();
-                mouth = new EnMouth();
+                ear = new EnEar(context);
+                mouth = new EnMouth(context);
                 break;
         }
         ear.setListener(this);
@@ -88,6 +89,7 @@ public class Avatar implements MouthListener, EarListener {
 
 
     public void speak(String textToSpeak) {
+        stopListening();
         mouth.speak(textToSpeak);
     }
 
@@ -98,6 +100,7 @@ public class Avatar implements MouthListener, EarListener {
 
 
     public void listen() {
+        stopSpeaking();
         ear.listen();
     }
 

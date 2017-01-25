@@ -1,5 +1,7 @@
 package danubis.derrick.library.Ear;
 
+import android.content.Context;
+
 import danubis.derrick.library.AvatarListener;
 
 /**
@@ -8,11 +10,18 @@ import danubis.derrick.library.AvatarListener;
 
 public abstract class Ear {
 
-    private EarListener listener;
+    EarListener listener;
+    Context context;
+
+    public Ear(Context context) {
+        this.context = context;
+    }
 
     public void setListener(EarListener listener) {
         this.listener = listener;
     }
+
+    abstract void setAsr();
 
     public abstract void listen();
 

@@ -20,6 +20,7 @@ public class EnMouth extends Mouth {
 
     public EnMouth(Context context) {
         super(context);
+        setTTS();
     }
 
 
@@ -65,6 +66,7 @@ public class EnMouth extends Mouth {
     private UtteranceProgressListener ttsListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
+
             isSpeaking = true;
             listener.onSpeakStarted(currentSpeak);
 

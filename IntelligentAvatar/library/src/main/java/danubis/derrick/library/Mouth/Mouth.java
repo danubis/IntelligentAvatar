@@ -8,11 +8,9 @@ import android.content.Context;
 
 public abstract class Mouth {
 
-    protected MouthListener listener;
-    protected Context context;
-
-    protected String currentSpeak;
-
+    MouthListener listener;
+    Context context;
+    String currentSpeak;
 
     Mouth(Context context) {
         this.context = context;

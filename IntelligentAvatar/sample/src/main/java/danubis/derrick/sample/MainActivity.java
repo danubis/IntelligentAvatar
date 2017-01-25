@@ -2,6 +2,9 @@ package danubis.derrick.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,13 +17,34 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
     private MyBody myBody;
     private Avatar avatar;
 
+    private TextView subtitleTextView;
+    private TextView resultTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myBrain = new MyBrain(Avatar.EN, null);
+        subtitleTextView = (TextView) findViewById(R.id.sub_textView);
+        resultTextView = (TextView) findViewById(R.id.result_textView);
+
+        findViewById(R.id.speak_button).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        avatar.listen();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        avatar.stopListening();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        myBrain = new MyBrain(Avatar.ZH_CN, null);
         myBody = new MyBody();
         avatar = new Avatar.Builder()
                 .context(this)
@@ -53,21 +77,38 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
 
 
     @Override
-    public void onSpeakStarted(String textToSpeak) {
-        //can use this callback to display subtitle
+    public void onSpeakStarted(final String textToSpeak) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                subtitleTextView.setText(textToSpeak);
+            }
+        });
     }
 
 
     @Override
     public void onSpeakEnded() {
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                subtitleTextView.setText("");
+            }
+        });
     }
 
 
     @Override
-    public void onListenResult(String result) {
+    public void onListenResult(final String result) {
 
-        ArrayList<Answer> answers = (ArrayList<Answer>) myBrain.think(result);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                resultTextView.setText(result);
+                avatar.speak(result);
+            }
+        });
+
         // TODO: 25/1/17 implement your play list of answer logic here.
     }
 }
