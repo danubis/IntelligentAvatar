@@ -2,26 +2,15 @@ package danubis.derrick.library.Brain;
 
 import java.util.ArrayList;
 
-/**
- * Created by yiluo on 24/1/17.
- */
+import danubis.derrick.library.Avatar;
+
 
 public abstract class Brain {
 
-    private String language;
-    private String accent;
+    protected Avatar avatar;
 
-    public Brain(String language, String accent) {
-        this.language = language;
-        this.accent = accent;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getAccent() {
-        return accent;
+    public void attachToAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     public abstract ArrayList<? extends Result> think(String question);

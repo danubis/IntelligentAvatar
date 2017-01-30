@@ -8,14 +8,22 @@ import danubis.derrick.library.Brain.Result;
 
 public class Answer extends Result {
 
+    private String ansType;
+    private String ans;
 
-    @Override
     public String getAnsType() {
-        return null;
+        return ansType;
     }
 
-    @Override
+    public void setAnsType(String ansType) {
+        this.ansType = ansType;
+    }
+
     public String getAns() {
-        return null;
+        return ans;
+    }
+
+    public void setAns(String ans) {
+        this.ans = ans;
     }
 }

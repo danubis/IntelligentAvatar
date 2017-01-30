@@ -24,6 +24,10 @@ public abstract class Mouth {
 
     public abstract void speak(String textToSpeak);
 
+    public abstract void speakTime();
+
+    public abstract void speakDate();
+
     public abstract void stopSpeaking();
 
     public abstract void destroy();

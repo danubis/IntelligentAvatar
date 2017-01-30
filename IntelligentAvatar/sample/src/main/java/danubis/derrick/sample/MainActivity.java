@@ -1,5 +1,6 @@
 package danubis.derrick.sample;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,15 +8,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import danubis.derrick.library.Avatar;
 import danubis.derrick.library.AvatarListener;
 import danubis.derrick.library.Body;
 
-public class MainActivity extends AppCompatActivity implements AvatarListener{
+public class MainActivity extends AppCompatActivity implements AvatarListener {
+
+    public final int VIDEO_REQUEST_CODE = 8901;
 
     private MyBrain myBrain;
-    private Body myBody;
     private Avatar avatar;
+
+    private ArrayList<Answer> answers;
+    private int currentAnswerIndex = 0;
 
     private TextView subtitleTextView;
     private TextView resultTextView;
@@ -26,9 +33,10 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String path = "your mp4 video file path";
+        String path = Environment.getExternalStorageDirectory()
+                + "xxxx";
 
-        myBody = (Body) findViewById(R.id.videoView);
+        Body myBody = (Body) findViewById(R.id.videoView);
         myBody.setVideoPath(path);
         myBody.start();
 
@@ -40,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+
+                        if (answers != null) {
+                            currentAnswerIndex = answers.size();
+                        }
+
                         avatar.listen();
                         break;
                     case MotionEvent.ACTION_UP:
@@ -50,14 +63,16 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
             }
         });
 
-        myBrain = new MyBrain(Avatar.EN, null);
         avatar = new Avatar.Builder()
                 .context(this)
-                .xfAppId("-------")
+                .xfAppId("xxx")
                 .listener(this)
-                .brain(myBrain)
+                .language(Avatar.EN)
                 .body(myBody)
                 .build();
+
+        myBrain = new MyBrain(this);
+        myBrain.attachToAvatar(avatar);
     }
 
 
@@ -83,6 +98,18 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case VIDEO_REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    onAnswerEnded();
+                }
+                break;
+        }
+    }
+
+
+    @Override
     public void onSpeakStarted(final String textToSpeak) {
         runOnUiThread(new Runnable() {
             @Override
@@ -95,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
 
     @Override
     public void onSpeakEnded() {
+
+        onAnswerEnded();
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -111,10 +141,21 @@ public class MainActivity extends AppCompatActivity implements AvatarListener{
             @Override
             public void run() {
                 resultTextView.setText(result);
-                avatar.speak(result);
             }
         });
+        answers = (ArrayList<Answer>) myBrain.think(result);
+        currentAnswerIndex = 0;
 
-        //implement your play list of answer logic here
+        if (answers != null && !answers.isEmpty()) {
+            myBrain.playAnswer(answers.get(currentAnswerIndex));
+        }
+    }
+
+
+    private void onAnswerEnded() {
+        currentAnswerIndex++;
+        if (currentAnswerIndex < answers.size()) {
+            myBrain.playAnswer(answers.get(currentAnswerIndex));
+        }
     }
 }

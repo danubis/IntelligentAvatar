@@ -2,7 +2,6 @@ package danubis.derrick.library;
 
 import android.content.Context;
 
-import danubis.derrick.library.Brain.Brain;
 import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
 import danubis.derrick.library.Ear.EarListener;
@@ -28,10 +27,12 @@ public class Avatar implements MouthListener, EarListener {
     private Mouth mouth;
     private AvatarListener listener;
 
+    private String lastSpokeText;
+
 
     private Avatar(Context context,
                    String appId,
-                   Brain brain,
+                   String language,
                    Body body,
                    AvatarListener listener) {
 
@@ -39,7 +40,7 @@ public class Avatar implements MouthListener, EarListener {
         this.body = body;
         this.listener = listener;
 
-        switch (brain.getLanguage()) {
+        switch (language) {
             case ZH_CN:
                 ear = new CnEar(context, appId);
                 mouth = new CnMouth(context);
@@ -58,7 +59,7 @@ public class Avatar implements MouthListener, EarListener {
 
         private Context context;
         private String xfAppId;
-        private Brain brain;
+        private String language;
         private Body body;
         private AvatarListener listener;
 
@@ -72,8 +73,8 @@ public class Avatar implements MouthListener, EarListener {
             return this;
         }
 
-        public Builder brain(Brain brain) {
-            this.brain = brain;
+        public Builder language(String language) {
+            this.language = language;
             return this;
         }
 
@@ -88,19 +89,35 @@ public class Avatar implements MouthListener, EarListener {
         }
 
         public Avatar build() {
-            return new Avatar(context, xfAppId, brain, body, listener);
+            return new Avatar(context, xfAppId, language, body, listener);
         }
     }
 
 
     public void speak(String textToSpeak) {
+        lastSpokeText = textToSpeak;
         stopListening();
         mouth.speak(textToSpeak);
     }
 
 
+    public void speakTime() {
+        mouth.speakTime();
+    }
+
+
+    public void speakDate() {
+        mouth.speakDate();
+    }
+
+
     public void stopSpeaking() {
         mouth.stopSpeaking();
+    }
+
+
+    public String getLastSpokeText() {
+        return lastSpokeText;
     }
 
 
