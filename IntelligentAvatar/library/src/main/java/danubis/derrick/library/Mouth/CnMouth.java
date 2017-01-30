@@ -9,6 +9,9 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by yiluo on 25/1/17.
  */
@@ -47,6 +50,30 @@ public class CnMouth extends Mouth {
         currentSpeak = textToSpeak;
         stopSpeaking();
         tts.startSpeaking(textToSpeak, ttsListener);
+    }
+
+
+    @Override
+    public void speakTime() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf;
+        String timeSpeak = "现在的时间是";
+        sdf = new SimpleDateFormat("HH点mm分");
+
+        timeSpeak = timeSpeak + sdf.format(calendar.getTime());
+        speak(timeSpeak);
+    }
+
+
+    @Override
+    public void speakDate() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        String dateSpeak = "今天是";
+        String[] days_cn = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+
+        dateSpeak = dateSpeak + days_cn[day];
+        speak(dateSpeak);
     }
 
 

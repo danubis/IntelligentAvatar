@@ -4,6 +4,8 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -46,9 +48,34 @@ public class EnMouth extends Mouth {
         tts.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, "my_speak");
     }
 
+
+    @Override
+    public void speakTime() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf;
+        String timeSpeak = "The time is ";
+        sdf = new SimpleDateFormat("HH:mm");
+
+        timeSpeak = timeSpeak + sdf.format(calendar.getTime());
+        speak(timeSpeak);
+    }
+
+
+    @Override
+    public void speakDate() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        String dateSpeak = "Today is ";
+        String[] days_en = {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
+
+        dateSpeak = dateSpeak + days_en[day];
+        speak(dateSpeak);
+    }
+
+
     @Override
     public void stopSpeaking() {
-        if(isSpeaking) {
+        if (isSpeaking) {
             tts.stop();
             ttsListener.onDone(null);
         }
@@ -56,7 +83,7 @@ public class EnMouth extends Mouth {
 
     @Override
     public void destroy() {
-        if(tts != null) {
+        if (tts != null) {
             tts.stop();
             tts.shutdown();
         }

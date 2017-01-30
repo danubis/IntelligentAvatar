@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
 
         avatar = new Avatar.Builder()
                 .context(this)
-                .xfAppId("xxx")
+                .xfAppId("xxxx")
                 .listener(this)
                 .language(Avatar.EN)
                 .body(myBody)
