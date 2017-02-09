@@ -1,8 +1,6 @@
 package danubis.derrick.sample;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 

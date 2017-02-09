@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
         setContentView(R.layout.activity_main);
 
         String path = Environment.getExternalStorageDirectory()
-                + "xxxx";
+                + "/Museum_Data/Video_Files/avatar_3.mp4";
 
         Body myBody = (Body) findViewById(R.id.videoView);
         myBody.setVideoPath(path);
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                         if (answers != null) {
                             currentAnswerIndex = answers.size();
                         }
-
                         avatar.listen();
                         break;
                     case MotionEvent.ACTION_UP:
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
 
         avatar = new Avatar.Builder()
                 .context(this)
-                .xfAppId("xxxx")
+                .xfAppId("56ef40cc")
                 .listener(this)
                 .language(Avatar.EN)
                 .body(myBody)
@@ -143,19 +142,23 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                 resultTextView.setText(result);
             }
         });
-        answers = (ArrayList<Answer>) myBrain.think(result);
-        currentAnswerIndex = 0;
-
-        if (answers != null && !answers.isEmpty()) {
-            myBrain.playAnswer(answers.get(currentAnswerIndex));
-        }
+        avatar.speak(result);
+//        answers = (ArrayList<Answer>) myBrain.think(result);
+//        currentAnswerIndex = 0;
+//
+//        if (answers != null && !answers.isEmpty()) {
+//            myBrain.playAnswer(answers.get(currentAnswerIndex));
+//        }
     }
 
 
     private void onAnswerEnded() {
-        currentAnswerIndex++;
-        if (currentAnswerIndex < answers.size()) {
-            myBrain.playAnswer(answers.get(currentAnswerIndex));
+
+        if (answers != null && answers.isEmpty()) {
+            currentAnswerIndex++;
+            if (currentAnswerIndex < answers.size()) {
+                myBrain.playAnswer(answers.get(currentAnswerIndex));
+            }
         }
     }
 }

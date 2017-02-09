@@ -15,6 +15,8 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
     public static final int ON_SPEAK_START = 10000;
     public static final int ON_SPEAK_END = 41000;
 
+    private int pausedPosition;
+
     public Body(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnCompletionListener(this);
@@ -37,15 +39,17 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
     @Override
     public void pause() {
         super.pause();
+        pausedPosition = getCurrentPosition();
     }
 
     @Override
     public void resume() {
-        super.resume();
+        seekTo(pausedPosition);
+        start();
     }
 
     public void destroy() {
-        super.stopPlayback();
+        stopPlayback();
     }
 
     @Override
