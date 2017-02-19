@@ -123,8 +123,10 @@ public class Avatar implements MouthListener, EarListener {
 
     public void listen() {
         stopSpeaking();
-        body.doWaitingAction();
         ear.listen();
+        if (body != null) {
+            body.doWaitingAction();
+        }
     }
 
 
@@ -134,35 +136,45 @@ public class Avatar implements MouthListener, EarListener {
 
 
     public void pause() {
-        body.pause();
         stopSpeaking();
         stopListening();
+        if (body != null) {
+            body.pause();
+        }
     }
 
 
     public void resume() {
-        body.resume();
+        if (body != null) {
+            body.resume();
+        }
     }
 
 
     public void destroy() {
-        body.destroy();
         ear.destroy();
         mouth.destroy();
+        if (body != null) {
+            body.destroy();
+        }
     }
 
 
     @Override
     public void onSpeakStarted(String speakingText) {
-        body.doSpeakingAction();
         listener.onSpeakStarted(speakingText);
+        if (body != null) {
+            body.doSpeakingAction();
+        }
     }
 
 
     @Override
     public void onSpeakEnded() {
-        body.doWaitingAction();
         listener.onSpeakEnded();
+        if (body != null) {
+            body.doWaitingAction();
+        }
     }
 
 
