@@ -272,7 +272,7 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
             mSurface = new SurfaceTexture(mTextureID);
 
             mMediaPlayer.setSurface(new Surface(mSurface));
-            if(!prepared) {
+            if (!prepared) {
                 mMediaPlayer.prepareAsync();
             }
         }
@@ -338,7 +338,7 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
             @Override
             public void onPrepared(MediaPlayer mp) {
                 prepared = true;
-                mp.seekTo(ON_SPEAK_END);
+                mp.seekTo(ON_HELLO_SPEAK_START);
                 mp.start();
             }
         };

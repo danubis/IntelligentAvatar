@@ -31,7 +31,7 @@ public class EnMouth extends Mouth {
         tts = new TextToSpeech(super.context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                tts.setLanguage(new Locale("en", "AU"));
+                tts.setLanguage(new Locale("en", "US"));
                 tts.setSpeechRate(1.1f);
                 tts.setPitch(1.4f);
             }

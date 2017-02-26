@@ -184,10 +184,9 @@ public class Avatar implements MouthListener, EarListener {
         listener.onSpeakStarted(speakingText);
         if (body != null) {
             body.doSpeakingAction();
+        } else if (transparentBody != null) {
+            transparentBody.doSpeakingAction();
         }
-//        else if (transparentBody != null) {
-//            transparentBody.doSpeakingAction();
-//        }
     }
 
 
@@ -196,10 +195,9 @@ public class Avatar implements MouthListener, EarListener {
         listener.onSpeakEnded();
         if (body != null) {
             body.doWaitingAction();
+        } else if (transparentBody != null) {
+            transparentBody.doWaitingAction();
         }
-//        else if (transparentBody != null) {
-//            transparentBody.doWaitingAction();
-//        }
     }
 
 
