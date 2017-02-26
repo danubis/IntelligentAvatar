@@ -1,4 +1,4 @@
-package danubis.derrick.library;
+package danubis.derrick.library.Body;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -17,18 +17,22 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
 
     private int pausedPosition;
 
+
     public Body(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnCompletionListener(this);
     }
 
-    void doSpeakingAction() {
+
+    public void doSpeakingAction() {
         doAction(ON_SPEAK_START);
     }
 
-    void doWaitingAction() {
+
+    public void doWaitingAction() {
         doAction(ON_SPEAK_END);
     }
+
 
     private void doAction(int msec) {
         pause();
@@ -36,11 +40,13 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
         start();
     }
 
+
     @Override
     public void pause() {
         super.pause();
         pausedPosition = getCurrentPosition();
     }
+
 
     @Override
     public void resume() {
@@ -48,9 +54,11 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
         start();
     }
 
+
     public void destroy() {
         stopPlayback();
     }
+
 
     @Override
     public void onCompletion(MediaPlayer mp) {

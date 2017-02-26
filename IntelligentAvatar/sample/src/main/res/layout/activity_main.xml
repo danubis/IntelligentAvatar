@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context="danubis.derrick.sample.MainActivity">
 
-    <danubis.derrick.library.Body
+    <!--<danubis.derrick.library.Body.Body-->
+        <!--android:id="@+id/videoView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:clickable="false"-->
+        <!--android:scrollbars="none" />-->
+
+    <danubis.derrick.library.Body.TransparentBody
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
-        android:scrollbars="none" />
+        android:scrollbars="none"/>
 
     <TextView
         android:id="@+id/sub_textView"

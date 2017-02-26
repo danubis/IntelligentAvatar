@@ -2,6 +2,8 @@ package danubis.derrick.library;
 
 import android.content.Context;
 
+import danubis.derrick.library.Body.Body;
+import danubis.derrick.library.Body.TransparentBody;
 import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
 import danubis.derrick.library.Ear.EarListener;
@@ -23,6 +25,7 @@ public class Avatar implements MouthListener, EarListener {
 
     private Context context;
     private Body body;
+    private TransparentBody transparentBody;
     private Ear ear;
     private Mouth mouth;
     private AvatarListener listener;
@@ -34,10 +37,12 @@ public class Avatar implements MouthListener, EarListener {
                    String appId,
                    String language,
                    Body body,
+                   TransparentBody transparentBody,
                    AvatarListener listener) {
 
         this.context = context;
         this.body = body;
+        this.transparentBody = transparentBody;
         this.listener = listener;
 
         switch (language) {
@@ -61,6 +66,7 @@ public class Avatar implements MouthListener, EarListener {
         private String xfAppId;
         private String language;
         private Body body;
+        private TransparentBody transparentBody;
         private AvatarListener listener;
 
         public Builder context(Context context) {
@@ -83,13 +89,18 @@ public class Avatar implements MouthListener, EarListener {
             return this;
         }
 
+        public Builder transparentBody(TransparentBody body) {
+            this.transparentBody = body;
+            return this;
+        }
+
         public Builder listener(AvatarListener listener) {
             this.listener = listener;
             return this;
         }
 
         public Avatar build() {
-            return new Avatar(context, xfAppId, language, body, listener);
+            return new Avatar(context, xfAppId, language, body, transparentBody, listener);
         }
     }
 
@@ -126,6 +137,8 @@ public class Avatar implements MouthListener, EarListener {
         ear.listen();
         if (body != null) {
             body.doWaitingAction();
+        } else if (transparentBody != null) {
+            transparentBody.doWaitingAction();
         }
     }
 
@@ -140,6 +153,8 @@ public class Avatar implements MouthListener, EarListener {
         stopListening();
         if (body != null) {
             body.pause();
+        } else if (transparentBody != null) {
+            transparentBody.pause();
         }
     }
 
@@ -147,6 +162,8 @@ public class Avatar implements MouthListener, EarListener {
     public void resume() {
         if (body != null) {
             body.resume();
+        } else if (transparentBody != null) {
+            transparentBody.resume();
         }
     }
 
@@ -156,6 +173,8 @@ public class Avatar implements MouthListener, EarListener {
         mouth.destroy();
         if (body != null) {
             body.destroy();
+        } else if (transparentBody != null) {
+            transparentBody.destroy();
         }
     }
 
@@ -166,6 +185,9 @@ public class Avatar implements MouthListener, EarListener {
         if (body != null) {
             body.doSpeakingAction();
         }
+//        else if (transparentBody != null) {
+//            transparentBody.doSpeakingAction();
+//        }
     }
 
 
@@ -175,6 +197,9 @@ public class Avatar implements MouthListener, EarListener {
         if (body != null) {
             body.doWaitingAction();
         }
+//        else if (transparentBody != null) {
+//            transparentBody.doWaitingAction();
+//        }
     }
 
 

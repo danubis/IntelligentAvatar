@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 import danubis.derrick.library.Avatar;
 import danubis.derrick.library.AvatarListener;
-import danubis.derrick.library.Body;
+import danubis.derrick.library.Body.Body;
+import danubis.derrick.library.Body.TransparentBody;
 
 public class MainActivity extends AppCompatActivity implements AvatarListener {
 
@@ -36,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
         String path = Environment.getExternalStorageDirectory()
                 + "/Museum_Data/Video_Files/avatar_3.mp4";
 
-        Body myBody = (Body) findViewById(R.id.videoView);
+        TransparentBody myBody = (TransparentBody) findViewById(R.id.videoView);
         myBody.setVideoPath(path);
-        myBody.start();
+//        myBody.start();
 
         subtitleTextView = (TextView) findViewById(R.id.sub_textView);
         resultTextView = (TextView) findViewById(R.id.result_textView);
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                 .xfAppId("56ef40cc")
                 .listener(this)
                 .language(Avatar.EN)
-                .body(myBody)
+                .transparentBody(myBody)
                 .build();
 
         myBrain = new MyBrain(this);
