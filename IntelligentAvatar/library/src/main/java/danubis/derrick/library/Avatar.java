@@ -31,6 +31,7 @@ public class Avatar implements MouthListener, EarListener {
     private AvatarListener listener;
 
     private String lastSpokeText;
+    private boolean isHelloSpeak = false;
 
 
     private Avatar(Context context,
@@ -102,6 +103,14 @@ public class Avatar implements MouthListener, EarListener {
         public Avatar build() {
             return new Avatar(context, xfAppId, language, body, transparentBody, listener);
         }
+    }
+
+
+    public void helloSpeak(String textToSpeak) {
+        lastSpokeText = textToSpeak;
+        stopListening();
+        isHelloSpeak = true;
+        mouth.speak(textToSpeak);
     }
 
 
@@ -182,11 +191,16 @@ public class Avatar implements MouthListener, EarListener {
     @Override
     public void onSpeakStarted(String speakingText) {
         listener.onSpeakStarted(speakingText);
-        if (body != null) {
-            body.doSpeakingAction();
-        } else if (transparentBody != null) {
-            transparentBody.doSpeakingAction();
+
+        if (!isHelloSpeak) {
+            isHelloSpeak = false;
+            if (body != null) {
+                body.doSpeakingAction();
+            } else if (transparentBody != null) {
+                transparentBody.doSpeakingAction();
+            }
         }
+
     }
 
 
