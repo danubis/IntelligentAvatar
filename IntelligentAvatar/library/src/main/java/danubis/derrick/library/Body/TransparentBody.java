@@ -38,6 +38,8 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
     private int pausedPosition = -1;
     private boolean prepared = false;
 
+    private ArrayList<Integer> idleActions;
+
 
     public TransparentBody(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +52,18 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
 
 
     public void setVideoPath(String path) {
+
+        idleActions = new ArrayList<>();
+        if (ON_IDLE_1 != -1) {
+            idleActions.add(ON_IDLE_1);
+        }
+        if (ON_IDLE_2 != -1) {
+            idleActions.add(ON_IDLE_2);
+        }
+        if (ON_IDLE_3 != -1) {
+            idleActions.add(ON_IDLE_3);
+        }
+
         mRenderer = new VideoRender(path);
         setRenderer(mRenderer);
     }
@@ -98,20 +112,6 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
 
     public void doIdleAction() {
 
-        ArrayList<Integer> idleActions = new ArrayList<>();
-
-        if (ON_IDLE_1 != -1) {
-            idleActions.add(ON_IDLE_1);
-        }
-
-        if (ON_IDLE_2 != -1) {
-            idleActions.add(ON_IDLE_2);
-        }
-
-        if (ON_IDLE_3 != -1) {
-            idleActions.add(ON_IDLE_3);
-        }
-
         if (idleActions.isEmpty()) {
             doWaitingAction();
         } else {
@@ -131,8 +131,17 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+
         mp.pause();
-        mp.seekTo(ON_SPEAK_END);
+
+        if (idleActions.isEmpty()) {
+            mp.seekTo(ON_SPEAK_END);
+        } else {
+            Random random = new Random();
+            int idleAction = random.nextInt(idleActions.size());
+            mp.seekTo(idleActions.get(idleAction));
+        }
+
         mp.start();
     }
 

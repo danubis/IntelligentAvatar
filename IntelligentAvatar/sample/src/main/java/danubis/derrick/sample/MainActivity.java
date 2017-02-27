@@ -35,14 +35,40 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
         setContentView(R.layout.activity_main);
 
         String path = Environment.getExternalStorageDirectory()
-                + "/Museum_Data/Video_Files/avatar_3.mp4";
+                + "/TestData/dt.mp4";
 
-        TransparentBody myBody = (TransparentBody) findViewById(R.id.videoView);
+        TransparentBody.ON_HELLO_SPEAK_START = 0;
+        TransparentBody.ON_SPEAK_START = 0;
+        TransparentBody.ON_SPEAK_END = 30000;
+        TransparentBody.ON_IDLE_1 = 50000;
+        TransparentBody.ON_IDLE_2 = 75000;
+        TransparentBody.ON_IDLE_3 = 100000;
+
+        TransparentBody myBody = (TransparentBody) findViewById(R.id.video_view);
         myBody.setVideoPath(path);
-//        myBody.start();
+
+        avatar = new Avatar.Builder()
+                .context(this)
+                .xfAppId("56ef40cc")
+                .listener(this)
+                .speechEngine(Avatar.GOOGLE)
+                .language(Avatar.EN)
+                .gender(Avatar.MALE)
+                .transparentBody(myBody)
+                .build();
+
+        myBrain = new MyBrain(this);
+        myBrain.attachToAvatar(avatar);
 
         subtitleTextView = (TextView) findViewById(R.id.sub_textView);
         resultTextView = (TextView) findViewById(R.id.result_textView);
+
+        findViewById(R.id.idle_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                avatar.idle();
+            }
+        });
 
         findViewById(R.id.speak_button).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -62,19 +88,6 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                 return true;
             }
         });
-
-        avatar = new Avatar.Builder()
-                .context(this)
-                .xfAppId("56ef40cc")
-                .listener(this)
-                .speechEngine(Avatar.GOOGLE)
-                .language(Avatar.EN)
-                .gender(Avatar.MALE)
-                .transparentBody(myBody)
-                .build();
-
-        myBrain = new MyBrain(this);
-        myBrain.attachToAvatar(avatar);
     }
 
 

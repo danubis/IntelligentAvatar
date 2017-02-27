@@ -7,41 +7,52 @@
     tools:context="danubis.derrick.sample.MainActivity">
 
     <!--<danubis.derrick.library.Body.Body-->
-        <!--android:id="@+id/videoView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:clickable="false"-->
-        <!--android:scrollbars="none" />-->
+    <!--android:id="@+id/videoView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:clickable="false"-->
+    <!--android:scrollbars="none" />-->
 
     <danubis.derrick.library.Body.TransparentBody
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
+        android:id="@+id/video_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:clickable="false"
-        android:scrollbars="none"/>
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="550dp"
+        android:layout_marginRight="550dp" />
 
     <TextView
         android:id="@+id/sub_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:text="subtitle" />
 
     <Button
         android:id="@+id/speak_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/sub_textView"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="Press to Speak" />
+
+    <Button
+        android:id="@+id/idle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/speak_button"
+        android:layout_marginTop="20dp"
+        android:text="IDLE" />
 
     <TextView
         android:id="@+id/result_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/speak_button"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/idle_button"
         android:layout_marginTop="10dp"
         android:text="result" />
 
