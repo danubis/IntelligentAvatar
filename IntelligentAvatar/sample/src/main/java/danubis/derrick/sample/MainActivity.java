@@ -70,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
             }
         });
 
+        findViewById(R.id.sample_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                avatar.speak(getString(R.string.sample));
+            }
+        });
+
         findViewById(R.id.speak_button).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
