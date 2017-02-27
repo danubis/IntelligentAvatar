@@ -39,9 +39,13 @@ public class EnMouth extends Mouth {
                 switch (gender) {
                     case Avatar.MALE:
                         voiceName = "en-us-x-sfg#male_3-local";
+                        tts.setSpeechRate(0.6f);
+                        tts.setPitch(0.8f);
                         break;
                     case Avatar.FEMALE:
                         voiceName = "en-us-x-sfg#female_1-local";
+                        tts.setSpeechRate(1.1f);
+                        tts.setPitch(1.4f);
                         break;
                 }
 
@@ -51,8 +55,7 @@ public class EnMouth extends Mouth {
                     }
                 }
 
-                tts.setSpeechRate(1.1f);
-                tts.setPitch(1.4f);
+
             }
         });
         tts.setOnUtteranceProgressListener(ttsListener);
