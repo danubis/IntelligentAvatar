@@ -232,15 +232,15 @@ public class Avatar implements MouthListener, EarListener {
     public void onSpeakStarted(String speakingText) {
         listener.onSpeakStarted(speakingText);
 
-        if (!isHelloSpeak) {
+        if (isHelloSpeak) {
             isHelloSpeak = false;
+        } else {
             if (body != null) {
                 body.doSpeakingAction();
             } else if (transparentBody != null) {
                 transparentBody.doSpeakingAction();
             }
         }
-
     }
 
 
