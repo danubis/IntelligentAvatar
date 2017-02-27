@@ -3,25 +3,29 @@ package danubis.derrick.library.Mouth;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.speech.tts.Voice;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/**
- * Created by yiluo on 25/1/17.
- */
+import danubis.derrick.library.Avatar;
+
 
 public class EnMouth extends Mouth {
 
     private TextToSpeech tts;
+    private String gender = Avatar.FEMALE;
+
 
     private boolean isSpeaking = false;
 
 
-    public EnMouth(Context context) {
+    public EnMouth(Context context, String gender) {
         super(context);
+        this.gender = gender;
         setTTS();
     }
 
@@ -31,7 +35,22 @@ public class EnMouth extends Mouth {
         tts = new TextToSpeech(super.context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                tts.setLanguage(new Locale("en", "US"));
+                String voiceName = "";
+                switch (gender) {
+                    case Avatar.MALE:
+                        voiceName = "en-us-x-sfg#male_3-local";
+                        break;
+                    case Avatar.FEMALE:
+                        voiceName = "en-us-x-sfg#female_1-local";
+                        break;
+                }
+
+                for (Voice voice : tts.getVoices()) {
+                    if (voice.getName().equals(voiceName)) {
+                        tts.setVoice(voice);
+                    }
+                }
+
                 tts.setSpeechRate(1.1f);
                 tts.setPitch(1.4f);
             }

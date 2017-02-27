@@ -2,11 +2,16 @@ package danubis.derrick.library.Ear;
 
 import android.content.Context;
 
+import com.iflytek.cloud.SpeechRecognizer;
+
 /**
  * Created by yiluo on 24/1/17.
  */
 
 public abstract class Ear {
+
+    SpeechRecognizer asr;
+    String tempResult = "";
 
     EarListener listener;
     Context context;

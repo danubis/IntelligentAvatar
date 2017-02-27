@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                 .context(this)
                 .xfAppId("56ef40cc")
                 .listener(this)
+                .speechEngine(Avatar.GOOGLE)
                 .language(Avatar.EN)
+                .gender(Avatar.MALE)
                 .transparentBody(myBody)
                 .build();
 

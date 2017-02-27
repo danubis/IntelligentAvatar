@@ -15,21 +15,14 @@ import java.util.Calendar;
 import danubis.derrick.library.Avatar;
 
 
-public class CnMouth extends Mouth {
+public class XfMouth extends Mouth {
 
     private SpeechSynthesizer tts;
     private String language = Avatar.ZH_CN;
     private String gender = Avatar.FEMALE;
 
 
-    public CnMouth(Context context, String gender) {
-        super(context);
-        this.gender = gender;
-        setTTS();
-    }
-
-
-    public CnMouth(Context context, String language, String gender) {
+    public XfMouth(Context context, String language, String gender) {
         super(context);
         this.language = language;
         this.gender = gender;
@@ -46,10 +39,10 @@ public class CnMouth extends Mouth {
             case Avatar.EN:
                 switch (gender) {
                     case Avatar.MALE:
-                        tts.setParameter(SpeechConstant.VOICE_NAME, "xiaofeng");
+                        tts.setParameter(SpeechConstant.VOICE_NAME, "henry");
                         break;
                     case Avatar.FEMALE:
-                        tts.setParameter(SpeechConstant.VOICE_NAME, "xiaoqi");
+                        tts.setParameter(SpeechConstant.VOICE_NAME, "vimary");
                 }
                 break;
             case Avatar.ZH_CN:
@@ -65,13 +58,10 @@ public class CnMouth extends Mouth {
 
         tts.setParameter(SpeechConstant.SPEED, "60");
         tts.setParameter(SpeechConstant.PITCH, "60");
-//        tts.setParameter(SpeechConstant.VOLUME, "100");//设置音量,范围 0~100
         tts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
         tts.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         tts.setParameter(SpeechConstant.STREAM_TYPE, "" + AudioManager.STREAM_MUSIC);
-        // 设置播放合成音频打断音乐播放，默认为true
         tts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "false");
-        //采样率 8000/16000 越低文件越小
         tts.setParameter(SpeechConstant.SAMPLE_RATE, "16000");
         tts.setParameter(SpeechConstant.TTS_BUFFER_TIME, "500");
     }
@@ -85,6 +75,7 @@ public class CnMouth extends Mouth {
     }
 
 
+    // TODO: 27/2/17 need to change this method to handle english
     @Override
     public void speakTime() {
         Calendar calendar = Calendar.getInstance();
@@ -97,6 +88,7 @@ public class CnMouth extends Mouth {
     }
 
 
+    // TODO: 27/2/17 need to change this method to handle english
     @Override
     public void speakDate() {
         Calendar calendar = Calendar.getInstance();

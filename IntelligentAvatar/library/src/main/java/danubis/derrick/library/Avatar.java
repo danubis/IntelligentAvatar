@@ -4,20 +4,25 @@ import android.content.Context;
 
 import danubis.derrick.library.Body.Body;
 import danubis.derrick.library.Body.TransparentBody;
-import danubis.derrick.library.Ear.CnEar;
 import danubis.derrick.library.Ear.Ear;
 import danubis.derrick.library.Ear.EarListener;
-import danubis.derrick.library.Ear.EnEar;
-import danubis.derrick.library.Mouth.CnMouth;
+import danubis.derrick.library.Ear.XfEar;
 import danubis.derrick.library.Mouth.EnMouth;
 import danubis.derrick.library.Mouth.Mouth;
 import danubis.derrick.library.Mouth.MouthListener;
+import danubis.derrick.library.Mouth.XfMouth;
 
 
 public class Avatar implements MouthListener, EarListener {
 
+    public static final String XUNFEI = "xunfei";
+    public static final String GOOGLE = "google";
+
     public static final String ZH_CN = "zhCN";
     public static final String EN = "en";
+
+    public static final String MALE = "male";
+    public static final String FEMALE = "female";
 
     public static final String SPEAK_TIME = "time";
     public static final String SPEAK_DATE = "date";
@@ -36,7 +41,9 @@ public class Avatar implements MouthListener, EarListener {
 
     private Avatar(Context context,
                    String appId,
+                   String speechEngine,
                    String language,
+                   String gender,
                    Body body,
                    TransparentBody transparentBody,
                    AvatarListener listener) {
@@ -46,16 +53,25 @@ public class Avatar implements MouthListener, EarListener {
         this.transparentBody = transparentBody;
         this.listener = listener;
 
-        switch (language) {
-            case ZH_CN:
-                ear = new CnEar(context, appId);
-                mouth = new CnMouth(context);
+        switch (speechEngine) {
+            case XUNFEI:
+                ear = new XfEar(context, language, appId);
+                mouth = new XfMouth(context, language, gender);
                 break;
-            case EN:
-                ear = new EnEar(context, appId);
-                mouth = new EnMouth(context);
-                break;
+            case GOOGLE:
+                ear = new XfEar(context, language, appId);
+
+                switch (language) {
+                    case EN:
+                        mouth = new EnMouth(context, gender);
+                        break;
+                    case ZH_CN:
+                        mouth = new XfMouth(context, language, gender);
+                        break;
+                }
+
         }
+
         ear.setListener(this);
         mouth.setListener(this);
     }
@@ -65,7 +81,9 @@ public class Avatar implements MouthListener, EarListener {
 
         private Context context;
         private String xfAppId;
+        private String speechEngine;
         private String language;
+        private String gender;
         private Body body;
         private TransparentBody transparentBody;
         private AvatarListener listener;
@@ -80,8 +98,18 @@ public class Avatar implements MouthListener, EarListener {
             return this;
         }
 
+        public Builder speechEngine(String speechEngine) {
+            this.speechEngine = speechEngine;
+            return this;
+        }
+
         public Builder language(String language) {
             this.language = language;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            this.gender = gender;
             return this;
         }
 
@@ -101,7 +129,8 @@ public class Avatar implements MouthListener, EarListener {
         }
 
         public Avatar build() {
-            return new Avatar(context, xfAppId, language, body, transparentBody, listener);
+            return new Avatar(context, xfAppId, speechEngine,
+                    language, gender, body, transparentBody, listener);
         }
     }
 
@@ -154,6 +183,17 @@ public class Avatar implements MouthListener, EarListener {
 
     public void stopListening() {
         ear.stopListening();
+    }
+
+
+    public void idle() {
+        stopSpeaking();
+        stopListening();
+        if (body != null) {
+            body.doIdleAction();
+        } else if (transparentBody != null) {
+            transparentBody.doIdleAction();
+        }
     }
 
 
