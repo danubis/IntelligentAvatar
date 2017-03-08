@@ -1,6 +1,7 @@
 package danubis.derrick.sample;
 
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import danubis.derrick.library.Avatar;

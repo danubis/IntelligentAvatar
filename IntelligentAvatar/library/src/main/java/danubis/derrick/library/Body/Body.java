@@ -30,6 +30,11 @@ public class Body extends VideoView implements MediaPlayer.OnCompletionListener 
     }
 
 
+    public void doHelloAction() {
+        doAction(ON_HELLO_SPEAK_START);
+    }
+
+
     public void doSpeakingAction() {
         doAction(ON_SPEAK_START);
     }

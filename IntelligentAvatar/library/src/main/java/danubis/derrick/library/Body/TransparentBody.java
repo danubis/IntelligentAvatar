@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Surface;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -97,6 +98,11 @@ public class TransparentBody extends GLSurfaceView implements MediaPlayer.OnComp
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+    }
+
+
+    public void doHelloAction() {
+        doAction(ON_HELLO_SPEAK_START);
     }
 
 
