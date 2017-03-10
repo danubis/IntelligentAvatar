@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
                 .listener(this)
                 .speechEngine(Avatar.GOOGLE)
                 .language(Avatar.EN)
-                .gender(Avatar.MALE)
+                .gender(Avatar.FEMALE)
                 .transparentBody(myBody)
                 .build();
 

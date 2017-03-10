@@ -43,13 +43,14 @@ public class EnMouth extends Mouth {
                         tts.setPitch(0.7f);
                         break;
                     case Avatar.FEMALE:
-                        voiceName = "en-us-x-sfg#female_1-local";
+                        voiceName = "en-AU-language";
                         tts.setSpeechRate(1.1f);
                         tts.setPitch(1.4f);
                         break;
                 }
 
                 for (Voice voice : tts.getVoices()) {
+                    Log.e("test", voice.getName());
                     if (voice.getName().equals(voiceName)) {
                         tts.setVoice(voice);
                     }
