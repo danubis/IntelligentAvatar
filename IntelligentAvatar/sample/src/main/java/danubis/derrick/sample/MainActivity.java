@@ -1,34 +1,33 @@
 package danubis.derrick.sample;
 
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import com.magicpi.maggie.Maggie;
+import com.magicpi.maggie.MaggieImpl;
+import com.magicpi.maggie.model.Dictionary;
+
+import java.io.FileNotFoundException;
 
 import danubis.derrick.library.Avatar;
-import danubis.derrick.library.AvatarListener;
-import danubis.derrick.library.Body.Body;
-import danubis.derrick.library.Body.TransparentBody;
+import danubis.derrick.sample.data.MockDataRepository;
+import io.indico.Indico;
+import io.indico.api.utils.IndicoException;
 
-public class MainActivity extends AppCompatActivity implements AvatarListener {
+public class MainActivity extends AppCompatActivity implements Avatar.AvatarListener, MainContract.View {
 
-    public final int VIDEO_REQUEST_CODE = 8901;
-
-    private MyBrain myBrain;
-    private Avatar avatar;
-
-    private ArrayList<Answer> answers;
-    private int currentAnswerIndex = 0;
-
+    private static final String LAGTAG = "MainActivity";
     private TextView subtitleTextView;
     private TextView resultTextView;
+
+    //treat avatar as a view in activity
+    private Avatar avatarView;
+
+    private MainContract.Presenter presenter;
 
 
     @Override
@@ -36,154 +35,82 @@ public class MainActivity extends AppCompatActivity implements AvatarListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String path = Environment.getExternalStorageDirectory()
-                + "/TestData/dt.mp4";
+        subtitleTextView = (TextView) findViewById(R.id.sub_textView);
+        resultTextView = (TextView) findViewById(R.id.result_textView);
 
-        TransparentBody.ON_HELLO_SPEAK_START = 0;
-        TransparentBody.ON_SPEAK_START = 0;
-        TransparentBody.ON_SPEAK_END = 30000;
-        TransparentBody.ON_IDLE_1 = 50000;
-        TransparentBody.ON_IDLE_2 = 75000;
-        TransparentBody.ON_IDLE_3 = 100000;
+        Button speakButton = (Button) findViewById(R.id.speak_button);
 
-        TransparentBody myBody = (TransparentBody) findViewById(R.id.video_view);
-        myBody.setVideoPath(path);
-
-        avatar = new Avatar.Builder()
+        avatarView = Avatar.builder()
                 .context(this)
                 .xfAppId("56ef40cc")
                 .listener(this)
                 .speechEngine(Avatar.GOOGLE)
                 .language(Avatar.EN)
                 .gender(Avatar.FEMALE)
-                .transparentBody(myBody)
+                .attachButton(speakButton)
                 .build();
 
-        myBrain = new MyBrain(this);
-        myBrain.attachToAvatar(avatar);
+        String path = Environment.getExternalStorageDirectory() + "/maggie/museum_general_1.json";
 
-        subtitleTextView = (TextView) findViewById(R.id.sub_textView);
-        resultTextView = (TextView) findViewById(R.id.result_textView);
+        try {
+            Indico indico = new Indico("344bcb1eff966604ef32ee8b4ebafcc0");
+            Maggie maggie = new MaggieImpl(0.85, 0.40, indico);
 
-        findViewById(R.id.idle_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                avatar.idle();
-            }
-        });
+            Dictionary dictionary = Dictionary.load(path);
+            maggie.setDictionary(dictionary);
 
-        findViewById(R.id.sample_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                avatar.speak(getString(R.string.sample));
-            }
-        });
+            presenter = new MainPresenter(this, new MaggieWrapper(maggie), new MockDataRepository());
 
-        findViewById(R.id.speak_button).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
+        } catch (IndicoException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-                        if (answers != null) {
-                            currentAnswerIndex = answers.size();
-                        }
-                        avatar.listen();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        avatar.stopListening();
-                        break;
-                }
-                return true;
-            }
-        });
+        findViewById(R.id.save_button).setOnClickListener(v -> presenter.saveDictionary(path));
     }
-
 
     @Override
     protected void onPause() {
         super.onPause();
-        avatar.pause();
+        avatarView.pause();
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        avatar.resume();
+        avatarView.resume();
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        avatar.destroy();
+        avatarView.destroy();
+        presenter.onDestroy();
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case VIDEO_REQUEST_CODE:
-                if (resultCode == RESULT_OK) {
-                    onAnswerEnded();
-                }
-                break;
-        }
-    }
-
 
     @Override
     public void onSpeakStarted(final String textToSpeak) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                subtitleTextView.setText(textToSpeak);
-            }
-        });
+        runOnUiThread(() -> subtitleTextView.setText(textToSpeak));
     }
-
 
     @Override
     public void onSpeakEnded() {
-
-        onAnswerEnded();
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                subtitleTextView.setText("");
-            }
-        });
+        runOnUiThread(() -> subtitleTextView.setText(""));
     }
-
 
     @Override
     public void onListenResult(final String result) {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                resultTextView.setText(result);
-            }
-        });
-        avatar.speak(result);
-//        answers = (ArrayList<Answer>) myBrain.think(result);
-//        currentAnswerIndex = 0;
-//
-//        if (answers != null && !answers.isEmpty()) {
-//            myBrain.playAnswer(answers.get(currentAnswerIndex));
-//        }
+        runOnUiThread(() -> resultTextView.setText("Voice recognition result: " + result));
+        presenter.findAnswer(result);
     }
 
+    @Override
+    public void speak(String speech) {
+        avatarView.speak(speech);
+    }
 
-    private void onAnswerEnded() {
-
-        if (answers != null && answers.isEmpty()) {
-            currentAnswerIndex++;
-            if (currentAnswerIndex < answers.size()) {
-                myBrain.playAnswer(answers.get(currentAnswerIndex));
-            }
-        }
+    @Override
+    public void suggest(String suggestion) {
+        avatarView.speak("do you mean " + suggestion);
     }
 }

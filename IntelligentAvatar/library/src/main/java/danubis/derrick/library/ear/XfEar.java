@@ -1,4 +1,4 @@
-package danubis.derrick.library.Ear;
+package danubis.derrick.library.ear;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -42,7 +42,7 @@ public class XfEar extends Ear {
                 asr.setParameter(SpeechConstant.ASR_PTT, "1.1");
                 asr.setParameter(SpeechConstant.LANGUAGE, "en_us");
                 break;
-            case Avatar.ZH_CN:
+            case Avatar.ZH:
                 asr.setParameter(SpeechConstant.ASR_PTT, "1");
                 asr.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
                 asr.setParameter(SpeechConstant.ACCENT, "mandarin");
@@ -105,7 +105,7 @@ public class XfEar extends Ear {
             if (null != recognizerResult) {
                 tempResult = tempResult + recognizerResult.getResultString();
                 if (isLast) {
-                    if (language.equals(Avatar.ZH_CN)) {
+                    if (language.equals(Avatar.ZH)) {
                         tempResult = tempResult.replace("，", "");
                         tempResult = tempResult.replace("？", "");
                         tempResult = tempResult.replace("。", "");

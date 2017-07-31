@@ -1,4 +1,4 @@
-package danubis.derrick.library.Mouth;
+package danubis.derrick.library.mouth;
 
 import android.content.Context;
 
@@ -11,6 +11,7 @@ public abstract class Mouth {
     MouthListener listener;
     Context context;
     String currentSpeak;
+    boolean isHelloSpeak;
 
     Mouth(Context context) {
         this.context = context;
@@ -22,7 +23,7 @@ public abstract class Mouth {
 
     abstract void setTTS();
 
-    public abstract void speak(String textToSpeak);
+    public abstract void speak(String textToSpeak, boolean isHelloSpeak);
 
     public abstract void speakTime();
 

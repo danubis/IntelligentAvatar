@@ -1,4 +1,4 @@
-package danubis.derrick.library.Ear;
+package danubis.derrick.library.ear;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,18 +15,17 @@ import com.iflytek.cloud.SpeechUtility;
  * Created by yiluo on 25/1/17.
  */
 
-public class EnEar extends Ear {
+public class CnEar extends Ear {
 
     private SpeechRecognizer asr;
     private String tempResult = "";
 
 
-    public EnEar(Context context, String appId) {
+    public CnEar(Context context, String appId) {
         super(context, appId);
         SpeechUtility.createUtility(context, SpeechConstant.APPID + "=" + appId + "," + SpeechConstant.FORCE_LOGIN + "=true");
         setAsr();
     }
-
 
     @Override
     protected void setAsr() {
@@ -39,8 +38,9 @@ public class EnEar extends Ear {
         //语音听写结果格式
         asr.setParameter(SpeechConstant.RESULT_TYPE, "plain");
         //设置听写文本结果是否带有标点
-        asr.setParameter(SpeechConstant.ASR_PTT, "1.1");
-        asr.setParameter(SpeechConstant.LANGUAGE, "en_us");
+        asr.setParameter(SpeechConstant.ASR_PTT, "1");
+        asr.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+        asr.setParameter(SpeechConstant.ACCENT, "mandarin");
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
         asr.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
@@ -97,6 +97,9 @@ public class EnEar extends Ear {
             if (null != recognizerResult) {
                 tempResult = tempResult + recognizerResult.getResultString();
                 if (isLast) {
+                    tempResult = tempResult.replace("，", "");
+                    tempResult = tempResult.replace("？", "");
+                    tempResult = tempResult.replace("。", "");
                     listener.onListenResult(tempResult);
                 }
             }

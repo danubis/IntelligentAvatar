@@ -1,4 +1,4 @@
-package danubis.derrick.library.Ear;
+package danubis.derrick.library.ear;
 
 import android.content.Context;
 

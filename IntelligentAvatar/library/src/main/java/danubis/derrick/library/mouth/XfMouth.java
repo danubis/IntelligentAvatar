@@ -1,4 +1,4 @@
-package danubis.derrick.library.Mouth;
+package danubis.derrick.library.mouth;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -18,7 +18,7 @@ import danubis.derrick.library.Avatar;
 public class XfMouth extends Mouth {
 
     private SpeechSynthesizer tts;
-    private String language = Avatar.ZH_CN;
+    private String language = Avatar.ZH;
     private String gender = Avatar.FEMALE;
 
 
@@ -28,7 +28,6 @@ public class XfMouth extends Mouth {
         this.gender = gender;
         setTTS();
     }
-
 
     @Override
     void setTTS() {
@@ -45,19 +44,19 @@ public class XfMouth extends Mouth {
                         tts.setParameter(SpeechConstant.VOICE_NAME, "vimary");
                 }
                 break;
-            case Avatar.ZH_CN:
+            case Avatar.ZH:
                 switch (gender) {
                     case Avatar.MALE:
                         tts.setParameter(SpeechConstant.VOICE_NAME, "xiaofeng");
                         break;
                     case Avatar.FEMALE:
-                        tts.setParameter(SpeechConstant.VOICE_NAME, "xiaoqi");
+                        tts.setParameter(SpeechConstant.VOICE_NAME, "vinn");
                 }
                 break;
         }
 
-        tts.setParameter(SpeechConstant.SPEED, "60");
-        tts.setParameter(SpeechConstant.PITCH, "60");
+        tts.setParameter(SpeechConstant.SPEED, "90");
+        tts.setParameter(SpeechConstant.PITCH, "50");
         tts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
         tts.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         tts.setParameter(SpeechConstant.STREAM_TYPE, "" + AudioManager.STREAM_MUSIC);
@@ -66,14 +65,13 @@ public class XfMouth extends Mouth {
         tts.setParameter(SpeechConstant.TTS_BUFFER_TIME, "500");
     }
 
-
     @Override
-    public void speak(String textToSpeak) {
+    public void speak(String textToSpeak, boolean isHelloSpeak) {
+        super.isHelloSpeak = isHelloSpeak;
         currentSpeak = textToSpeak;
         stopSpeaking();
         tts.startSpeaking(textToSpeak, ttsListener);
     }
-
 
     // TODO: 27/2/17 need to change this method to handle english
     @Override
@@ -84,9 +82,8 @@ public class XfMouth extends Mouth {
         sdf = new SimpleDateFormat("HH点mm分");
 
         timeSpeak = timeSpeak + sdf.format(calendar.getTime());
-        speak(timeSpeak);
+        speak(timeSpeak, false);
     }
-
 
     // TODO: 27/2/17 need to change this method to handle english
     @Override
@@ -97,9 +94,8 @@ public class XfMouth extends Mouth {
         String[] days_cn = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
         dateSpeak = dateSpeak + days_cn[day];
-        speak(dateSpeak);
+        speak(dateSpeak, false);
     }
-
 
     @Override
     public void stopSpeaking() {
@@ -109,7 +105,6 @@ public class XfMouth extends Mouth {
         }
     }
 
-
     @Override
     public void destroy() {
         if (tts != null) {
@@ -118,12 +113,11 @@ public class XfMouth extends Mouth {
         }
     }
 
-
     private SynthesizerListener ttsListener = new SynthesizerListener() {
 
         @Override
         public void onSpeakBegin() {
-            listener.onSpeakStarted(currentSpeak);
+            listener.onSpeakStarted(currentSpeak, isHelloSpeak);
         }
 
 
@@ -161,5 +155,4 @@ public class XfMouth extends Mouth {
         public void onEvent(int i, int i1, int i2, Bundle bundle) {
         }
     };
-
 }

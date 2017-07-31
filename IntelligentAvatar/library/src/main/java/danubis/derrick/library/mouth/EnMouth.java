@@ -1,4 +1,4 @@
-package danubis.derrick.library.Mouth;
+package danubis.derrick.library.mouth;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
@@ -8,7 +8,6 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import danubis.derrick.library.Avatar;
@@ -28,7 +27,6 @@ public class EnMouth extends Mouth {
         this.gender = gender;
         setTTS();
     }
-
 
     @Override
     void setTTS() {
@@ -50,27 +48,23 @@ public class EnMouth extends Mouth {
                 }
 
                 for (Voice voice : tts.getVoices()) {
-                    Log.e("test", voice.getName());
                     if (voice.getName().equals(voiceName)) {
                         tts.setVoice(voice);
                     }
                 }
-
-
             }
         });
         tts.setOnUtteranceProgressListener(ttsListener);
     }
 
-
     @Override
-    public void speak(String textToSpeak) {
+    public void speak(String textToSpeak, boolean isHelloSpeak) {
+        super.isHelloSpeak = isHelloSpeak;
         currentSpeak = textToSpeak;
         stopSpeaking();
         textToSpeak = textToSpeak.replaceAll("(?i)" + Pattern.quote("magicpi"), "MagicPai");
         tts.speak(textToSpeak, TextToSpeech.QUEUE_ADD, null, "my_speak");
     }
-
 
     @Override
     public void speakTime() {
@@ -80,9 +74,8 @@ public class EnMouth extends Mouth {
         sdf = new SimpleDateFormat("HH:mm");
 
         timeSpeak = timeSpeak + sdf.format(calendar.getTime());
-        speak(timeSpeak);
+        speak(timeSpeak, false);
     }
-
 
     @Override
     public void speakDate() {
@@ -92,9 +85,8 @@ public class EnMouth extends Mouth {
         String[] days_en = {"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
 
         dateSpeak = dateSpeak + days_en[day];
-        speak(dateSpeak);
+        speak(dateSpeak, false);
     }
-
 
     @Override
     public void stopSpeaking() {
@@ -112,13 +104,12 @@ public class EnMouth extends Mouth {
         }
     }
 
-
     private UtteranceProgressListener ttsListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
 
             isSpeaking = true;
-            listener.onSpeakStarted(currentSpeak);
+            listener.onSpeakStarted(currentSpeak, isHelloSpeak);
 
         }
 

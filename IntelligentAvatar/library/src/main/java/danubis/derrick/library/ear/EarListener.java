@@ -1,4 +1,4 @@
-package danubis.derrick.library.Ear;
+package danubis.derrick.library.ear;
 
 /**
  * Created by yiluo on 25/1/17.

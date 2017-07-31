@@ -1,4 +1,4 @@
-package danubis.derrick.library.Mouth;
+package danubis.derrick.library.mouth;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -18,7 +18,7 @@ import danubis.derrick.library.Avatar;
 public class CnMouth extends Mouth {
 
     private SpeechSynthesizer tts;
-    private String language = Avatar.ZH_CN;
+    private String language = Avatar.ZH;
     private String gender = Avatar.FEMALE;
 
 
@@ -52,7 +52,7 @@ public class CnMouth extends Mouth {
                         tts.setParameter(SpeechConstant.VOICE_NAME, "xiaoqi");
                 }
                 break;
-            case Avatar.ZH_CN:
+            case Avatar.ZH:
                 switch (gender) {
                     case Avatar.MALE:
                         tts.setParameter(SpeechConstant.VOICE_NAME, "xiaofeng");
@@ -78,7 +78,8 @@ public class CnMouth extends Mouth {
 
 
     @Override
-    public void speak(String textToSpeak) {
+    public void speak(String textToSpeak, boolean isHelloSpeak) {
+        super.isHelloSpeak = isHelloSpeak;
         currentSpeak = textToSpeak;
         stopSpeaking();
         tts.startSpeaking(textToSpeak, ttsListener);
@@ -93,7 +94,7 @@ public class CnMouth extends Mouth {
         sdf = new SimpleDateFormat("HH点mm分");
 
         timeSpeak = timeSpeak + sdf.format(calendar.getTime());
-        speak(timeSpeak);
+        speak(timeSpeak, false);
     }
 
 
@@ -105,7 +106,7 @@ public class CnMouth extends Mouth {
         String[] days_cn = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
 
         dateSpeak = dateSpeak + days_cn[day];
-        speak(dateSpeak);
+        speak(dateSpeak, false);
     }
 
 
@@ -131,7 +132,7 @@ public class CnMouth extends Mouth {
 
         @Override
         public void onSpeakBegin() {
-            listener.onSpeakStarted(currentSpeak);
+            listener.onSpeakStarted(currentSpeak, isHelloSpeak);
         }
 
 
