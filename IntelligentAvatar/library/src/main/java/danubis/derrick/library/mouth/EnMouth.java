@@ -4,7 +4,6 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
