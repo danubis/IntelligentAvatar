@@ -65,22 +65,24 @@ public class Avatar implements MouthListener, EarListener {
 
         ear.setListener(this);
         mouth.setListener(this);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        Log.e(LAGTAG, "on action down: " + v.getId());
-                        listen();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        Log.e(LAGTAG, "on action up: " + v.getId());
-                        stopListening();
-                        break;
+        if (view != null) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            Log.e(LAGTAG, "on action down: " + v.getId());
+                            listen();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            Log.e(LAGTAG, "on action up: " + v.getId());
+                            stopListening();
+                            break;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
     }
 
     public static Builder builder() {
