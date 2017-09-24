@@ -50,7 +50,7 @@ public class XfMouth extends Mouth {
                         tts.setParameter(SpeechConstant.VOICE_NAME, "xiaofeng");
                         break;
                     case Avatar.FEMALE:
-                        tts.setParameter(SpeechConstant.VOICE_NAME, "vinn");
+                        tts.setParameter(SpeechConstant.VOICE_NAME, "xiaoqi");
                 }
                 break;
         }
