@@ -55,8 +55,8 @@ public class XfMouth extends Mouth {
                 break;
         }
 
-        tts.setParameter(SpeechConstant.SPEED, "90");
-        tts.setParameter(SpeechConstant.PITCH, "50");
+        tts.setParameter(SpeechConstant.SPEED, "60");
+        tts.setParameter(SpeechConstant.PITCH, "60");
         tts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
         tts.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         tts.setParameter(SpeechConstant.STREAM_TYPE, "" + AudioManager.STREAM_MUSIC);
