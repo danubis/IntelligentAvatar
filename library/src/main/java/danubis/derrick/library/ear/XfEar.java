@@ -3,6 +3,7 @@ package danubis.derrick.library.ear;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
@@ -20,12 +21,14 @@ import danubis.derrick.library.Avatar;
 public class XfEar extends Ear {
 
     private String language;
+    private boolean enableTranslation;
 
 
-    public XfEar(Context context, String language, String appId) {
+    public XfEar(Context context, String language, String appId, boolean enableTranslation) {
         super(context, appId);
         SpeechUtility.createUtility(context, SpeechConstant.APPID + "=" + appId + "," + SpeechConstant.FORCE_LOGIN + "=true");
         this.language = language;
+        this.enableTranslation = enableTranslation;
         setAsr();
     }
 
@@ -49,11 +52,17 @@ public class XfEar extends Ear {
                 break;
         }
 
-
         asr.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         asr.setParameter(SpeechConstant.ASR_AUDIO_PATH,
                 Environment.getExternalStorageDirectory() + "/msc/asr.wav");
 
+//        if (enableTranslation) {
+//            asr.setParameter( SpeechConstant.ASR_SCH, "1" );
+//            asr.setParameter( SpeechConstant.ADD_CAP, "translate" );
+//            asr.setParameter( SpeechConstant.TRS_SRC, "its" );
+//            asr.setParameter( SpeechConstant.ORI_LANG, "cn" );
+//            asr.setParameter( SpeechConstant.TRANS_LANG, "en" );
+//        }
     }
 
 
@@ -117,6 +126,7 @@ public class XfEar extends Ear {
 
         @Override
         public void onError(SpeechError speechError) {
+            Log.e("XfEar", speechError.toString());
         }
 
         @Override

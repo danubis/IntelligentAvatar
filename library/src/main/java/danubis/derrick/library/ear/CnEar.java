@@ -3,6 +3,7 @@ package danubis.derrick.library.ear;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
@@ -46,6 +47,12 @@ public class CnEar extends Ear {
         asr.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         asr.setParameter(SpeechConstant.ASR_AUDIO_PATH,
                 Environment.getExternalStorageDirectory() + "/msc/asr.wav");
+
+        asr.setParameter( SpeechConstant.ASR_SCH, "1" );
+        asr.setParameter( SpeechConstant.ADD_CAP, "translate" );
+        asr.setParameter( SpeechConstant.TRS_SRC, "its" );
+        asr.setParameter( SpeechConstant.ORI_LANG, "cn" );
+        asr.setParameter( SpeechConstant.TRANS_LANG, "en" );
     }
 
 
@@ -93,6 +100,8 @@ public class CnEar extends Ear {
 
         @Override
         public void onResult(RecognizerResult recognizerResult, boolean isLast) {
+
+            Log.e("Test", recognizerResult.getResultString());
 
             if (null != recognizerResult) {
                 tempResult = tempResult + recognizerResult.getResultString();

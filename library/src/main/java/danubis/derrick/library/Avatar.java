@@ -43,18 +43,18 @@ public class Avatar implements MouthListener, EarListener {
     private Avatar(Context context, Body body,
                    String appId, String speechEngine,
                    String language, String gender,
-                   AvatarListener listener, View view) {
+                   AvatarListener listener, View view, boolean enableTranslation) {
 
         this.body = body;
         this.listener = listener;
 
         switch (speechEngine) {
             case XUNFEI:
-                ear = new XfEar(context, language, appId);
+                ear = new XfEar(context, language, appId, enableTranslation);
                 mouth = new XfMouth(context, language, gender);
                 break;
             case GOOGLE:
-                ear = new XfEar(context, language, appId);
+                ear = new XfEar(context, language, appId, enableTranslation);
                 switch (language) {
                     case EN:
                         mouth = new EnMouth(context, gender);
@@ -98,6 +98,7 @@ public class Avatar implements MouthListener, EarListener {
         private String gender;
         private AvatarListener listener;
         private View view;
+        private boolean enableTranslation;
 
         private Builder() {
         }
@@ -142,9 +143,14 @@ public class Avatar implements MouthListener, EarListener {
             return this;
         }
 
+        public Builder enableTranslation(boolean enable) {
+            this.enableTranslation = enable;
+            return this;
+        }
+
         public Avatar build() {
             return new Avatar(context, body, xfAppId, speechEngine,
-                    language, gender, listener, view);
+                    language, gender, listener, view, enableTranslation);
         }
     }
 
@@ -177,11 +183,13 @@ public class Avatar implements MouthListener, EarListener {
     }
 
     public void listen() {
+        Log.e(TAG, "started listening...");
         stopSpeaking();
         ear.listen();
     }
 
     public void stopListening() {
+        Log.e(TAG, "stopped listening...");
         ear.stopListening();
     }
 
